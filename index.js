@@ -122,7 +122,7 @@ app.get("/maxproducts", async (req, res) => {
   try {
     const response = await fetch("http://localhost:3000/products");
     const list = await response.json();
-    const maxproduits = list.reduce(
+    let maxproduits = list.reduce(
       (max, product) => (product.pr > max.pr ? product : max),
       list[0]
     );
