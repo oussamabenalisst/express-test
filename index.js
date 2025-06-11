@@ -117,7 +117,8 @@ app.post("/regester", (req, res) => {
     res.status(500).json({ error: "Unexpected error" });
   }
 });
-app.get("/maxproduits", async (req, res) => {
+
+app.get("/maxproducts", async (req, res) => {
   try {
     const response = await fetch("http://localhost:3000/products");
     const list = await response.json();
@@ -131,6 +132,7 @@ app.get("/maxproduits", async (req, res) => {
     res.status(500).json({ error: "Error fetching or processing products" });
   }
 });
+
 app.get("/close", (req, res) => {
   db.end((err) => {
     if (err) {
