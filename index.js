@@ -13,7 +13,7 @@ const db = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "",
-  database: "test",
+  database: "artshop",
 });
 
 db.connect((err) => {
@@ -24,7 +24,7 @@ db.connect((err) => {
   console.log("Connected to the database!");
 });
 
-app.get("/products", (req, res) => {
+app.get("/product", (req, res) => {
   const sql = "SELECT `ipProduct`,`name`,`pr` FROM `product` WHERE 1";
 
   db.query(sql, (err, results) => {
@@ -44,7 +44,7 @@ app.get("/hello", (req, res) => {
   });
 });
 
-app.get("/update/:id/:name", (req, res) => {
+app.put("/update/:id/:name", (req, res) => {
   const sql =
     "UPDATE `product` SET `name`='" +
     req.params.name +
