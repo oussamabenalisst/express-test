@@ -38,7 +38,22 @@ app.get("/hello", (req, res) => {
   });
 });
 
-
+app.get("/update/:id/:name", (req, res) => {
+  const sql =
+    "UPDATE `product` SET `name`='" +
+    req.params.name +
+    "' WHERE `ipProduct`=" +
+    req.params.id +
+    ";";
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error("Erreur lors de la récupération des produits:", err);
+      res.status(500).json({ error: "Erreur lors du chargement des produits" });
+      return;
+    }
+    res.json(results);
+  });
+});
 
 app.listen(port, () => {
   console.log(`Serveur démarré sur http://localhost:${port}`);
