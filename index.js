@@ -3,6 +3,8 @@ import express from "express";
 const app = express();
 const port = 3000;
 
+app.use(express.json());
+
 app.listen(port, () => {
   console.log(`Serveur démarré sur http://localhost:${port}`);
 });
@@ -72,6 +74,47 @@ app.get("/product/:id", (req, res) => {
     }
     res.json(results);
   });
+});
+app.post("/regester", (req, res) => {
+  try {
+    const { email, passwd, num, key } = req.body;
+
+    if (!email || !passwd || !num || !key) {
+      return res.status(400).json({ error: "error input" });
+    }
+
+    const checkSql = "SELECT * FROM `clients` WHERE `email` = ? ";
+    db.query(checkSql, [email, passwd], (err, results) => {
+      if (err) {
+        console.error("Erreur lors de la vérification des clients:", err);
+        return res
+          .status(500)
+          .json({ error: "Erreur lors de la vérification des clients" });
+      }
+
+      if (results.length > 0) {
+        return res.status(409).json({ message: "email ex" });
+      }
+      const insertSql =
+        "INSERT INTO `clients`(`email`, `password`, `numTl`, `keyy`) VALUES (?, ?, ?, ?)";
+      db.query(insertSql, [email, passwd, num, key], (err, result) => {
+        if (err) {
+          console.error("Erreur lors de l'insertion du client:", err);
+          return res
+            .status(500)
+            .json({ error: "Erreur lors de l'insertion du client" });
+        }
+
+        res.status(201).json({
+          message: "good",
+          clientId: result.insertId,
+        });
+      });
+    });
+  } catch (err) {
+    console.error("Unexpected error:", err);
+    res.status(500).json({ error: "Unexpected error" });
+  }
 });
 
 app.get("/close", (req, res) => {
