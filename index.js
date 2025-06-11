@@ -75,6 +75,7 @@ app.get("/product/:id", (req, res) => {
     res.json(results);
   });
 });
+
 app.post("/regester", (req, res) => {
   try {
     const { email, passwd, num, key } = req.body;
@@ -116,7 +117,20 @@ app.post("/regester", (req, res) => {
     res.status(500).json({ error: "Unexpected error" });
   }
 });
-
+app.get("/maxproduits", async (req, res) => {
+  try {
+    const response = await fetch("http://localhost:3000/products");
+    const list = await response.json();
+    const maxproduits = list.reduce(
+      (max, product) => (product.pr > max.pr ? product : max),
+      list[0]
+    );
+    res.send(maxproduits);
+  } catch (err) {
+    console.error("Error fetching or processing products:", error);
+    res.status(500).json({ error: "Error fetching or processing products" });
+  }
+});
 app.get("/close", (req, res) => {
   db.end((err) => {
     if (err) {
