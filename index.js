@@ -31,6 +31,15 @@ app.get("/products", (req, res) => {
   });
 });
 
+app.get("/hello", (req, res) => {
+  res.send({
+    name: "putin",
+    prenom: "vladimar",
+  });
+});
+
+
+
 app.listen(port, () => {
   console.log(`Serveur démarré sur http://localhost:${port}`);
 });
