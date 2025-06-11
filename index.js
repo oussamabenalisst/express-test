@@ -3,6 +3,10 @@ import express from "express";
 const app = express();
 const port = 3000;
 
+app.listen(port, () => {
+  console.log(`Serveur démarré sur http://localhost:${port}`);
+});
+
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -19,7 +23,7 @@ db.connect((err) => {
 });
 
 app.get("/products", (req, res) => {
-  const sql = "SELECT `ipProduct`,`name`,`pr`,`vu` FROM `product` WHERE 1";
+  const sql = "SELECT `ipProduct`,`name`,`pr` FROM `product` WHERE 1";
 
   db.query(sql, (err, results) => {
     if (err) {
@@ -55,13 +59,9 @@ app.get("/update/:id/:name", (req, res) => {
   });
 });
 
-app.listen(port, () => {
-  console.log(`Serveur démarré sur http://localhost:${port}`);
-});
-
 app.get("/product/:id", (req, res) => {
   const sql =
-    "SELECT `ipProduct`,`name`,`pr`,`vu` FROM `product` WHERE `ipProduct`=" +
+    "SELECT `ipProduct`,`name`,`pr` FROM `product` WHERE `ipProduct`=" +
     req.params.id +
     ";";
   db.query(sql, (err, results) => {
